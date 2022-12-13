@@ -28,23 +28,23 @@ module.exports = async (request, response) => {
             if (text && text.startsWith('c2VjcmV0')) {
                 let msg = text + "!!!" + username.toLowerCase();
                 let reqUrl = `${server}/${msg}`
-                // axios.get(reqUrl)
-                //     .then(response => {
-                //         const message = response;
-                //         // Send our new message back in Markdown
-                //         // console.log(response.substr(0,20));
-                //         bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
-                //         // console.log(response.data.url);
-                //         // console.log(response.data.explanation);
-                //     })
-                //     .catch(error => {
-                //         console.log(error);
-                //         bot.sendMessage(id, error, { parse_mode: 'Markdown', reply_to_message_id: message_id });
-                //     });
+                axios.get(reqUrl)
+                    .then(response => {
+                        const message = response && response.data || "error from axios";
+                        // Send our new message back in Markdown
+                        // console.log(response.substr(0,20));
+                        bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                        // console.log(response.data.url);
+                        // console.log(response.data.explanation);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        bot.sendMessage(id, error, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                    });
 
                 // Create a message to send back
                 // We can use Markdown inside this
-                await bot.sendMessage(id, reqUrl, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                // await bot.sendMessage(id, reqUrl, { parse_mode: 'Markdown', reply_to_message_id: message_id });
 
             }
 
