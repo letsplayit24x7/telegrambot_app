@@ -4,6 +4,7 @@ process.env.NTBA_FIX_319 = 'test';
 const server = "https://telegrambot-demo.vercel.app"
 // Require our Telegram helper package
 const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
 
 // Export as an asynchronous function
 // We'll wait until we've responded to the user
@@ -24,21 +25,36 @@ module.exports = async (request, response) => {
             // const { chat: { id }, text } = body.message;
             const { message_id, from: { username }, chat: { id }, text } = body.message;
 
-            // Create a message to send back
-            // We can use Markdown inside this
-            const message = `✅ Thanks ${y=username} for your message: *"${text}"*\nHave a great day! 👋🏻`;
+            if (text.startsWith('c2VjcmV0')) {
+                let msg = text + "!!!" + username.toLowerCase();
+                let reqUrl = `${server}/${msg}`
+                axios.get(reqUrl)
+                    .then(response => {
+                        const message = response;
+                        // Send our new message back in Markdown
+                        bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                        // console.log(response.data.url);
+                        // console.log(response.data.explanation);
+                    })
+                    .catch(error => {
+                        // console.log(error);
+                        bot.sendMessage(id, error, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                    });
 
-            // Send our new message back in Markdown
-            await bot.sendMessage(id, message, {parse_mode: 'Markdown', reply_to_message_id:message_id});
+                // Create a message to send back
+                // We can use Markdown inside this
+
+            }
+
         }
     }
-    catch(error) {
+    catch (error) {
         // If there was an error sending our message then we 
         // can log it into the Vercel console
         console.error('Error sending message');
         console.log(error.toString());
     }
-    
+
     // Acknowledge the message with Telegram
     // by sending a 200 HTTP status code
     response.send('OK');
