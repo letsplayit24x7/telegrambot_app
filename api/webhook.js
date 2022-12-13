@@ -32,12 +32,13 @@ module.exports = async (request, response) => {
                     .then(response => {
                         const message = response;
                         // Send our new message back in Markdown
+                        console.log(response.substr(0,20));
                         bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
                         // console.log(response.data.url);
                         // console.log(response.data.explanation);
                     })
                     .catch(error => {
-                        // console.log(error);
+                        console.log(error);
                         bot.sendMessage(id, error, { parse_mode: 'Markdown', reply_to_message_id: message_id });
                     });
 
