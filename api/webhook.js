@@ -39,7 +39,7 @@ module.exports = async (request, response) => {
                     })
                     .catch(error => {
                         console.log(error);
-                        bot.sendMessage(id, error, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                        bot.sendMessage(id, error.message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
                     });
 
                 // Create a message to send back
