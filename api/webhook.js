@@ -1,7 +1,7 @@
 // https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294
 // Fixes an error with Promise cancellation
 process.env.NTBA_FIX_319 = 'test';
-
+const server = "https://telegrambot-demo.vercel.app"
 // Require our Telegram helper package
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -21,14 +21,15 @@ module.exports = async (request, response) => {
         if (body.message) {
             // Retrieve the ID for this chat
             // and the text that the user sent
-            const { chat: { id }, text } = body.message;
+            // const { chat: { id }, text } = body.message;
+            const { message_id, from: { username }, chat: { id } } = body.message;
 
             // Create a message to send back
             // We can use Markdown inside this
-            const message = `✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻`;
+            const message = `✅ Thanks ${y=username} for your message: *"${text}"*\nHave a great day! 👋🏻`;
 
             // Send our new message back in Markdown
-            await bot.sendMessage(id, message, {parse_mode: 'Markdown'});
+            await bot.sendMessage(id, message, {parse_mode: 'Markdown', reply_to_message_id:message_id});
         }
     }
     catch(error) {
