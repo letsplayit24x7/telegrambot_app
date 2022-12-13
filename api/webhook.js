@@ -25,14 +25,14 @@ module.exports = async (request, response) => {
             // const { chat: { id }, text } = body.message;
             const { message_id, from: { username }, chat: { id }, text } = body.message;
 
-            if (text.startsWith('c2VjcmV0')) {
+            if (text && text.startsWith('c2VjcmV0')) {
                 let msg = text + "!!!" + username.toLowerCase();
                 let reqUrl = `${server}/${msg}`
                 axios.get(reqUrl)
                     .then(response => {
                         const message = response;
                         // Send our new message back in Markdown
-                        console.log(response.substr(0,20));
+                        // console.log(response.substr(0,20));
                         bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
                         // console.log(response.data.url);
                         // console.log(response.data.explanation);
