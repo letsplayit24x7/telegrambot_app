@@ -22,7 +22,7 @@ module.exports = async (request, response) => {
             // Retrieve the ID for this chat
             // and the text that the user sent
             // const { chat: { id }, text } = body.message;
-            const { message_id, from: { username }, chat: { id } } = body.message;
+            const { message_id, from: { username }, chat: { id }, text } = body.message;
 
             // Create a message to send back
             // We can use Markdown inside this
