@@ -158,26 +158,27 @@ module.exports = async (request, response) => {
                 let actionUrl = root + urls[urlCode];
 
                 if (urlCode === 'secrets') {
-                    getSecrets(actionUrl, value);
+                    let newData = getSecrets();
+                    bot.sendMessage(id, newData, { parse_mode: 'Markdown', reply_to_message_id: message_id });
                     return;
                 }
 
 
-                let msg = text + "!!!" + username.toLowerCase();
-                let reqUrl = `${server}/${msg}`
-                axios.get(reqUrl)
-                    .then(response => {
-                        const message = response && response.data || "error from axios";
-                        // Send our new message back in Markdown
-                        // console.log(response.substr(0,20));
-                        bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
-                        // console.log(response.data.url);
-                        // console.log(response.data.explanation);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        bot.sendMessage(id, error.message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
-                    });
+                // let msg = text + "!!!" + username.toLowerCase();
+                // let reqUrl = `${server}/${msg}`
+                // axios.get(reqUrl)
+                //     .then(response => {
+                //         const message = response && response.data || "error from axios";
+                //         // Send our new message back in Markdown
+                //         // console.log(response.substr(0,20));
+                //         bot.sendMessage(id, message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                //         // console.log(response.data.url);
+                //         // console.log(response.data.explanation);
+                //     })
+                //     .catch(error => {
+                //         console.log(error);
+                //         bot.sendMessage(id, error.message, { parse_mode: 'Markdown', reply_to_message_id: message_id });
+                //     });
 
                 // Create a message to send back
                 // We can use Markdown inside this
@@ -198,14 +199,15 @@ module.exports = async (request, response) => {
     response.send('OK');
 
 
-    function getSecrets(actionUrl, value, bot, tid, msgId) {
+    function getSecrets() {
         let data = secrets
         let res = "==========================================\nSecrets\n==========================================";
         Object.keys(data).forEach(function (k) {
             res = res + "\n`" + k + "`\n\n" + data[k] + "\n------------------------\n\n"
-        })
+        });
 
-        bot.sendMessage(tid, data, { parse_mode: 'Markdown', reply_to_message_id: msgId });
+        return res;
+
     }
 };
 
