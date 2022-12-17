@@ -197,17 +197,15 @@ module.exports = async (request, response) => {
     // Acknowledge the message with Telegram
     // by sending a 200 HTTP status code
     response.send('OK');
-
-
-    function getSecrets() {
-        let data = secrets
-        let res = "==========================================\nSecrets\n==========================================";
-        Object.keys(data).forEach(function (k) {
-            res = res + "\n`" + k + "`\n\n" + data[k] + "\n------------------------\n\n"
-        });
-
-        return res;
-
-    }
 };
 
+function getSecrets() {
+    let data = secrets
+    let res = "==========================================\nSecrets\n==========================================";
+    Object.keys(data).forEach(function (k) {
+        res = res + "\n`" + k + "`\n\n" + data[k] + "\n------------------------\n\n"
+    });
+
+    return res;
+
+}
